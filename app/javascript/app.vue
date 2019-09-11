@@ -1,22 +1,46 @@
 <template>
-  <div id="app">
-    <p>{{ message }}</p>
+  <div>
+    <p v-bind:style="`color: ${color}`">Message: {{ message }}</p>
+    <p :style="`color: ${color}`">Reversed message: {{ reversedMessage }}</p>
+    <button v-on:click="changeMessage">Change message</button>
+    <button @click="resetMessage">Reset message</button>
   </div>
 </template>
 
 <script>
 export default {
-  data: function () {
+  data () {
     return {
-      message: "Hello Vue!"
+      message: 'I am message',
+      color: 'green'
+    }
+  },
+  computed: {
+    reversedMessage () {
+      return this.message.split('').reverse().join('')
+    }
+  },
+  watch: {
+    message (newValue, oldValue) {
+      console.log(`Message changed from "${oldValue}" to "${newValue}"`)
+    }
+  },
+  methods: {
+    changeMessage() {
+      this.message = 'I am new message'
+    },
+    resetMessage() {
+      this.message = 'I am message'
     }
   }
 }
 </script>
 
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
+<style>
+  p {
+    font-size: 2em;
+  }
+  button {
+    font-size: 1em;
+  }
 </style>

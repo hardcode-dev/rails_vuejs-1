@@ -1,19 +1,9 @@
 import Vue from 'vue/dist/vue.esm'
+import App from '../app'
 
 document.addEventListener('DOMContentLoaded', () => {
-  let myComponentName = {
-    template: '<p>{{message}}</p>',
-    data() {
-      return {
-        message: 'Hello VueJS'
-      }
-    }
-  }
-
   new Vue({
     el: '#app',
-    components: {
-      'my-component-name': myComponentName
-    }
+    render: h => h(App)
   })
 })
