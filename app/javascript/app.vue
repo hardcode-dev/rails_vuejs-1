@@ -1,22 +1,32 @@
-<template>
-  <div v-if="loading">
-    <p>Загрузка</p>
-  </div>
-  <div v-else>
-    <div v-if="error">
-      <p>Ошибка</p>
-    </div>
-    <div v-else>
-      <input v-model="title">
-      <button @click="addTodo">Add todo</button>
-      <todo :title="todo.title" v-for="todo in list" @deleteTodo="deleteTodo"></todo>
-    </div>
-  </div>
+<template lang="pug">
+  div(v-if="loading")
+    p Загрузка
+  div(v-else)
+    div(v-if="error")
+      p Ошибка
+    div(v-else)
+      input(v-model="title")
+      button(@click="addTodoItem") Add todo
+
+      transition-group(name="list")
+        TodoItem(
+          class="list-item"
+          :todoItem="todoItem"
+          v-for="todoItem in todoList"
+          :key="todoItem.id"
+          @deleteTodoItem="deleteTodoItem"
+          )
+
+          template(v-slot:default)
+            | Название:
+          template(v-slot:remove="props")
+            RemoveButton(:id="props.id" :status="props.status" @deleteTodoItem="deleteTodoItem")
 </template>
 
 <script>
-  import axios from 'axios'
-  import Todo from 'app/components/todo'
+  import { backend } from 'app/backend'
+  import TodoItem from 'app/components/TodoItem'
+  import RemoveButton from 'app/components/RemoveButton'
 
   export default {
     data: function () {
@@ -24,26 +34,35 @@
         loading: true,
         error: false,
         title: '',
-        list: []
+        todoList: []
       }
     },
     created: function() {
-      axios.get('/list')
-        .then((response) => this.list = response.data)
-        .catch(() => this.error = true)
-        .finally(() => this.loading = false)
+      this.fetchItems()
     },
     methods: {
-      addTodo() {
-        this.list.push({ title: this.title })
-        this.title = ''
+      fetchItems() {
+        backend.items.index()
+          .then((response) => this.todoList = response.data)
+          .catch(() => this.error = true)
+          .finally(() => this.loading = false)
       },
-      deleteTodo(title) {
-        this.list = this.list.filter((todo) => { if (todo.title !== title) return todo })
+      addTodoItem() {
+        let params = { title: this.title }
+        backend.items.create(params)
+          .finally(() => {
+            this.fetchItems()
+            this.title = ''
+          })
+      },
+      deleteTodoItem(id) {
+        backend.items.destroy(id)
+          .finally(() => this.fetchItems())
       }
     },
     components: {
-      Todo
+      TodoItem,
+      RemoveButton
     }
   }
 </script>
@@ -54,5 +73,17 @@
   }
   button {
     font-size: 1em;
+  }
+
+  .list-item {
+    display: block;
+    margin-right: 10px;
+  }
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+  .list-enter, .list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
   }
 </style>

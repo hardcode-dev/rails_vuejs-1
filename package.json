@@ -4,6 +4,8 @@
   "dependencies": {
     "@rails/webpacker": "^4.0.7",
     "axios": "^0.19.0",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10"
