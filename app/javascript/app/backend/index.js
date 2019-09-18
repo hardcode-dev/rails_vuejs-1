@@ -10,6 +10,16 @@ const adapter = axios.create({
   }
 })
 
+adapter.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  if (error.response.status === 401) {
+    window.location.href = "/login"
+  } else {
+    return Promise.reject(error)
+  }
+})
+
 const backend = {
   items: {
     index: () => adapter.get('items'),

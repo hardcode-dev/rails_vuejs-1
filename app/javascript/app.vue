@@ -5,6 +5,7 @@
     div(v-if="error")
       p Ошибка
     div(v-else)
+      // img(:src="require('images/logo.jpg')")
       input(v-model="title")
       button(@click="addTodoItem") Add todo
 
@@ -19,12 +20,11 @@
 
           template(v-slot:default)
             | Название:
-          template(v-slot:remove="props")
-            RemoveButton(:id="props.id" :status="props.status" @deleteTodoItem="deleteTodoItem")
+          template(v-slot:remove="{ id }")
+            RemoveButton(:id="id" @deleteTodoItem="deleteTodoItem")
 </template>
 
 <script>
-  import { backend } from 'app/backend'
   import TodoItem from 'app/components/TodoItem'
   import RemoveButton from 'app/components/RemoveButton'
 
@@ -42,21 +42,21 @@
     },
     methods: {
       fetchItems() {
-        backend.items.index()
+        this.$backend.items.index()
           .then((response) => this.todoList = response.data)
           .catch(() => this.error = true)
           .finally(() => this.loading = false)
       },
       addTodoItem() {
         let params = { title: this.title }
-        backend.items.create(params)
+        this.$backend.items.create(params)
           .finally(() => {
             this.fetchItems()
             this.title = ''
           })
       },
       deleteTodoItem(id) {
-        backend.items.destroy(id)
+        this.$backend.items.destroy(id)
           .finally(() => this.fetchItems())
       }
     },

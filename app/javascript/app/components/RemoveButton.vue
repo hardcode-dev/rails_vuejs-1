@@ -1,17 +1,11 @@
-<template>
-  <button :disabled="done" @click="deleteTodoItem">Удалить</button>
+<template lang="pug">
+  q-btn(@click="deleteTodoItem") Удалить
 </template>
 
 <script>
   export default {
     props: {
-      id: Number,
-      status: Number
-    },
-    computed: {
-      done() {
-        return this.status === 1
-      }
+      id: Number
     },
     methods: {
       deleteTodoItem() {

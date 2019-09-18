@@ -66,6 +66,15 @@ module.exports = function(api) {
         {
           async: false
         }
+      ],
+      [
+        'transform-imports',
+        {
+          quasar: {
+            transform: `quasar/dist/babel-transforms/imports.js`,
+            preventFullImport: false
+          }
+        }
       ]
     ].filter(Boolean)
   }

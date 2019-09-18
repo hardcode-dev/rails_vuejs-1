@@ -1,23 +1,20 @@
 <template lang="pug">
   div
-    p
-      slot
-      | {{ todoItem.id }}. {{ todoItem.title }}
-      slot(name="remove" :status="todoItem.status" :id="todoItem.id")
-        button(@click="deleteTodoItem") Delete
+    slot
+    | {{ todoItem.title }}
+    slot(name="remove" :id="todoItem.id")
+      button(@click="deleteTodoItem") Delete
 </template>
 
 <script>
   export default {
     props: {
-        todoItem: {
-          type: Object,
-          required: true
+      todoItem: {
+        type: Object,
+        required: true,
+        validator () {
+          return false
         }
-      },
-    data () {
-      return {
-        icons: ['check', 'times']
       }
     },
     methods: {
