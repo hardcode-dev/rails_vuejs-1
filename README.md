@@ -122,7 +122,7 @@ A: Move javascript_pack_tag and stylesheet_pack_tag below body html tag in layou
   </body>
 </html>
 ```
-1. Q: I have error:
+2. Q: I have error:
 ```
 Error: Unknown import from Quasar: function Vue(options) {
   if ( true && !(this instanceof Vue)) {
