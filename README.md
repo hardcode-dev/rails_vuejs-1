@@ -22,7 +22,7 @@ environment.loaders.append('js', babelLoaderQuasar)
 3. Add stylus-loader in config/webpack/loaders/stylus.js:
 ```
 module.exports = {
-  test: /\.styl$/,
+  test: /\.styl(us)?$/,
   loader: 'style-loader!css-loader!stylus-loader'
 }
 ```
