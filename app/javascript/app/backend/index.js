@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 let token = document.head.querySelector('meta[name="csrf-token"]')
 axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
@@ -27,6 +28,8 @@ const backend = {
     destroy: (id) => adapter.delete(`items/${id}`),
   }
 }
+
+Vue.prototype.$backend = backend
 
 export {
   backend
