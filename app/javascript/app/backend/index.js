@@ -25,6 +25,7 @@ const backend = {
   items: {
     index: () => adapter.get('items'),
     create: (params) => adapter.post(`items`, params),
+    show: (id) => adapter.get(`items/${id}`),
     destroy: (id) => adapter.delete(`items/${id}`),
   }
 }

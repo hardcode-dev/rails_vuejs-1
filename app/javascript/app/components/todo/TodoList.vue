@@ -2,13 +2,20 @@
   .row
     .col-lg-5.q-pa-md
       .text-h6.q-pb-md Список задач
-      transition-group(name="list")
-        TodoItem.q-pa-sm(
-          class="list-item"
-          :todoItem="todoItem"
-          v-for="todoItem in todoList"
-          :key="todoItem.id"
-          @destroyed="fetchItems")
+      div.flex.justify-center(v-if="backendLoading")
+        q-spinner-bars(
+          size="md"
+          color="brown-6")
+      div(v-else-if="backendError")
+        p Error
+      div(v-else)
+        transition-group(name="list")
+          TodoItem.q-pa-sm(
+            class="list-item"
+            :todoItem="todoItem"
+            v-for="todoItem in todoList"
+            :key="todoItem.id"
+            @destroyed="fetchItems")
 
     q-separator(vertical)
 
@@ -20,30 +27,31 @@
 <script>
   import TodoItem from 'app/components/todo/TodoItem'
   import TodoItemForm from 'app/components/todo/TodoItemForm'
+  import loadingMixin from '../../mixins'
 
   export default {
     data () {
       return {
-        loading: true,
         todoItem: {},
         todoList: []
       }
     },
     created () {
-      this.fetchItems()
+      setTimeout(this.fetchItems, 750)
     },
     methods: {
       fetchItems () {
         this.$backend.items.index()
           .then(({ data }) => this.todoList = data)
-          .catch(() => this.error = true)
-          .finally(() => this.loading = false)
+          .catch(() => this.backendError = true)
+          .finally(() => this.backendLoading = false)
       }
     },
     components: {
       TodoItem,
       TodoItemForm
-    }
+    },
+    mixins: [loadingMixin]
   }
 </script>
 

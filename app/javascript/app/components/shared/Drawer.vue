@@ -8,8 +8,10 @@
       q-list(padding)
         //div(v-for="link in menu" :key="link.route")
         q-item(
-          v-ripple
           clickable
+          :to="{ name: 'Todos' }"
+          exact
+          v-ripple
           active-class="bg-brown-4")
           q-item-section(avatar)
             q-icon(color="white" name="fas fa-tasks")

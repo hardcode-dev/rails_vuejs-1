@@ -21,10 +21,11 @@ import {
   QPageContainer,
   QScrollArea,
   QSpace,
-  QSpinner,
+  QSpinnerBars,
   QSeparator,
   QToolbar,
   QToolbarTitle,
+  Notify,
   Ripple
 } from 'quasar'
 
@@ -46,7 +47,7 @@ Vue.use(Quasar, {
     QPageContainer,
     QScrollArea,
     QSpace,
-    QSpinner,
+    QSpinnerBars,
     QSeparator,
     QToolbar,
     QToolbarTitle
@@ -54,5 +55,8 @@ Vue.use(Quasar, {
   iconSet: iconSet,
   directives: {
     Ripple
+  },
+  plugins: {
+    Notify
   },
 })

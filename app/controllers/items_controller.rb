@@ -8,6 +8,10 @@ class ItemsController < ApplicationController
     Item.create(permitted_params)
   end
 
+  def show
+    @item = Item.find(params[:id])
+  end
+
   def destroy
     @item = Item.find(params[:id])
     @item.destroy

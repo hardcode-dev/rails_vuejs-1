@@ -1,4 +1,4 @@
 module.exports = {
-  test: /\.styl$/,
+  test: /\.styl(us)?$/,
   loader: 'style-loader!css-loader!stylus-loader'
 }

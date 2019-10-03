@@ -20,7 +20,8 @@
 
       q-page-container
         q-page
-          TodoList
+          transition
+            router-view
 
 </template>
 
