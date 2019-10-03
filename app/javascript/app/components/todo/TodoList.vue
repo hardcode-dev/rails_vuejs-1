@@ -9,6 +9,8 @@
       div(v-else-if="backendError")
         p Error
       div(v-else)
+        todo-search
+
         q-table(
           ref="table"
           :loading="backendLoading"
@@ -37,32 +39,42 @@
   import ActionsCell from 'app/components/todo/ActionsCell'
   import TodoItem from 'app/components/todo/TodoItem'
   import TodoItemForm from 'app/components/todo/TodoItemForm'
+  import TodoSearch from 'app/components/todo/TodoSearch'
   import loadingMixin from '../../mixins'
+
 
   export default {
     data () {
       return {
-        todoItem: {},
         todoList: {
           table: {
             columns: [],
             data: [],
-            filter: '',
             pagination: {}
-          },
-          filter: ''
+          }
         }
       }
     },
+    computed: {
+      filter () {
+        return this.$store.state.filter
+      }
+    },
+    watch: {
+      filter () {
+        this.refresh()
+      }
+    },
     created () {
-      setTimeout(this.fetchItems, 750)
+      this.onRequest({
+        pagination: this.todoList.table.pagination,
+        filter: this.filter
+      })
     },
     methods: {
       onRequest (props) {
         let { page, rowsPerPage, sortBy, descending } = props.pagination
-        let filter = props.filter
-
-        this.fetchItems(page, rowsPerPage, sortBy, descending, filter)
+        this.fetchItems(page, rowsPerPage, sortBy, descending, this.filter)
       },
       refresh () {
         this.$refs.table.requestServerInteraction()
@@ -77,7 +89,8 @@
     components: {
       ActionsCell,
       TodoItem,
-      TodoItemForm
+      TodoItemForm,
+      TodoSearch
     },
     mixins: [loadingMixin]
   }

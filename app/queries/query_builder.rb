@@ -12,7 +12,7 @@ class QueryBuilder
   def perform
     perform_scope
     perform_filter
-    perform_sort
+    # perform_sort
     perform_pagination
   end
 
@@ -30,7 +30,7 @@ class QueryBuilder
   end
 
   def perform_filter
-    @search = @params[:search]
+    @search = @params[:filter]
     return if @search.blank?
 
     if @performed_scope.klass.respond_to?(:search)
