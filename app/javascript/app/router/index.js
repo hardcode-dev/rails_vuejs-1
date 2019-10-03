@@ -13,7 +13,16 @@ export default new VueRouter({
     {
       name: 'Todos',
       path: '/todos',
-      component: TodoList
+      component: TodoList,
+      children: [
+        {
+          path: '/todos/:id/edit',
+          name: 'todoItemEdit',
+          components: {
+            edit: () => import('../components/todo/todoItemEdit.vue')
+          }
+        }
+      ]
     },
     {
       name: 'Todo',

@@ -23,7 +23,7 @@ adapter.interceptors.response.use(function (response) {
 
 const backend = {
   items: {
-    index: () => adapter.get('items'),
+    index: (params) => adapter.get('items', { params: params }),
     create: (params) => adapter.post(`items`, params),
     show: (id) => adapter.get(`items/${id}`),
     destroy: (id) => adapter.delete(`items/${id}`),

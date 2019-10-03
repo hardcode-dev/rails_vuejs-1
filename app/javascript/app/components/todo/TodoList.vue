@@ -9,22 +9,32 @@
       div(v-else-if="backendError")
         p Error
       div(v-else)
-        transition-group(name="list")
-          TodoItem.q-pa-sm(
-            class="list-item"
-            :todoItem="todoItem"
-            v-for="todoItem in todoList"
-            :key="todoItem.id"
-            @destroyed="fetchItems")
+        q-table(
+          ref="table"
+          :loading="backendLoading"
+          :columns="todoList.table.columns"
+          :data="todoList.table.data"
+          row-key="id"
+          :pagination.sync="todoList.table.pagination"
+          :rows-per-page-options="[10, 25, 100]"
+          :filter="todoList.filter"
+          binary-state-sort
+          @request="onRequest"
+          separator="cell")
+          template(v-slot:body-cell-actions="props")
+            q-td(key="actions")
+              actions-cell(:actions="props.row.actions", :id="props.row.id" @changed="refresh")
 
     q-separator(vertical)
 
     .col-lg-5.q-pa-md
-      TodoItemForm(@created="fetchItems")
+      TodoItemForm(@created="refresh")
 
+    router-view(name="edit")
 </template>
 
 <script>
+  import ActionsCell from 'app/components/todo/ActionsCell'
   import TodoItem from 'app/components/todo/TodoItem'
   import TodoItemForm from 'app/components/todo/TodoItemForm'
   import loadingMixin from '../../mixins'
@@ -33,21 +43,39 @@
     data () {
       return {
         todoItem: {},
-        todoList: []
+        todoList: {
+          table: {
+            columns: [],
+            data: [],
+            filter: '',
+            pagination: {}
+          },
+          filter: ''
+        }
       }
     },
     created () {
       setTimeout(this.fetchItems, 750)
     },
     methods: {
-      fetchItems () {
-        this.$backend.items.index()
+      onRequest (props) {
+        let { page, rowsPerPage, sortBy, descending } = props.pagination
+        let filter = props.filter
+
+        this.fetchItems(page, rowsPerPage, sortBy, descending, filter)
+      },
+      refresh () {
+        this.$refs.table.requestServerInteraction()
+      },
+      fetchItems (page, rowsPerPage, sort, desc, filter, scopes) {
+        this.$backend.items.index({ page, rowsPerPage, sort, desc, filter, scopes })
           .then(({ data }) => this.todoList = data)
           .catch(() => this.backendError = true)
           .finally(() => this.backendLoading = false)
       }
     },
     components: {
+      ActionsCell,
       TodoItem,
       TodoItemForm
     },

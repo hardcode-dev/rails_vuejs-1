@@ -1,7 +1,9 @@
 class ItemsController < ApplicationController
+  layout false
+
   def index
-    @list = Item.all
-    render :index, layout: false
+    scope = Item.all
+    @manager = ::QueryBuilder.new(params, scope)
   end
 
   def create

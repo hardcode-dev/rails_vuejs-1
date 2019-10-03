@@ -8,6 +8,11 @@ import {
   Quasar,
   QAvatar,
   QBtn,
+  QBtnDropdown,
+  QBtnGroup,
+  QCard,
+  QCardSection,
+  QDialog,
   QDrawer,
   QIcon,
   QInput,
@@ -23,8 +28,13 @@ import {
   QSpace,
   QSpinnerBars,
   QSeparator,
+  QTable,
+  QTd,
+  QTh,
+  QTr,
   QToolbar,
   QToolbarTitle,
+  ClosePopup,
   Notify,
   Ripple
 } from 'quasar'
@@ -34,6 +44,11 @@ Vue.use(Quasar, {
   components: {
     QAvatar,
     QBtn,
+    QBtnDropdown,
+    QBtnGroup,
+    QCard,
+    QCardSection,
+    QDialog,
     QDrawer,
     QIcon,
     QInput,
@@ -49,11 +64,16 @@ Vue.use(Quasar, {
     QSpace,
     QSpinnerBars,
     QSeparator,
+    QTable,
+    QTd,
+    QTh,
+    QTr,
     QToolbar,
     QToolbarTitle
   },
   iconSet: iconSet,
   directives: {
+    ClosePopup,
     Ripple
   },
   plugins: {
