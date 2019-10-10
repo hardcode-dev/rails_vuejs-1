@@ -92,7 +92,15 @@
       TodoItemForm,
       TodoSearch
     },
-    mixins: [loadingMixin]
+    mixins: [loadingMixin],
+    subscriptions: {
+      ItemsChannel: {
+        received: function(data) {
+          let newTodo = data.todo
+          this.todoList.table.data.push(newTodo)
+        }
+      }
+    }
   }
 </script>
 

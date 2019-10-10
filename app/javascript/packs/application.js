@@ -5,6 +5,7 @@ import '../app/quasar'
 import '../app/backend'
 import router from '../app/router'
 import store from '../app/store'
+import '../app/sockets'
 import '../app/mixins'
 
 document.addEventListener('DOMContentLoaded', () => {

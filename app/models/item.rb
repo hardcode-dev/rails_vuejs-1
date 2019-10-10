@@ -9,4 +9,10 @@ class Item < ApplicationRecord
     return [] unless query
     search_by("#{query}")
   end
+
+  after_save :broadcast
+
+  def broadcast
+    ActionCable.server.broadcast('items', { todo: self })
+  end
 end
